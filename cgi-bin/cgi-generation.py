@@ -35,7 +35,6 @@ def writeHtml():
     file.write('<head>\n')
     file.write('<body>\n')
     file.write('<h2>Test Code Searcher Report</h2>\n')
-    
 
 #url
 url = "file:///Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/systems_functions-blind-clones/systems_functions-blind-clones-0.30-classes-withsource.html"
