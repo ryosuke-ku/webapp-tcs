@@ -35,7 +35,12 @@ def writeHtml():
     file.write('    background-color: #456;\n')
     file.write('}\n')
   
-    file.write('h1,h2 {\n')
+    file.write('h1 {\n')
+    file.write('    margin-top: 25px;')
+    file.write('    color: white;\n')
+    file.write('}\n')
+
+    file.write('h2 {\n')
     file.write('    color: white;\n')
     file.write('}\n')
 
@@ -44,7 +49,7 @@ def writeHtml():
     file.write('    padding: 10px; \n')
     file.write('    border-left: 0px;\n')
     file.write('    border-bottom: 0px;\n')
-    file.write('    background-color: white;\n')
+    # file.write('    background-color: white;\n')
     file.write('}\n')
 
     file.write('th {\n')
@@ -56,12 +61,12 @@ def writeHtml():
     file.write('    border-bottom: 0px; \n')
     file.write('}\n')
 
-    file.write('table {\n')
-    file.write('    border-collapse:  collapse;\n')
-    file.write('    border-collapse: separate;\n')
-    file.write('    border-spacing: 0;\n')
-    file.write('    border-radius: 15px;\n')
-    file.write('}\n')
+    # file.write('table {\n')
+    # file.write('    border-collapse:  collapse;\n')
+    # file.write('    border-collapse: separate;\n')
+    # file.write('    border-spacing: 0;\n')
+    # file.write('    border-radius: 15px;\n')
+    # file.write('}\n')
 
     file.write('mark.red {\n')
     file.write('    background-color: rgb(254, 198, 198);\n')
@@ -81,14 +86,57 @@ def writeHtml():
     file.write('    padding-right: 5px;\n')
     file.write('}\n')
 
-    file.write('.whitecolor {')
-	file.write('background-color: white;')
+    file.write('.whitecolor {\n')
+    file.write('	background-color: white;\n')
     file.write('}\n')
+
+    file.write('#table-flame {\n')
+    file.write('    background-color: rgba(72,72,72,0.4);\n')
+    file.write('    padding-left: 35px;\n')
+    file.write('    padding-right: 35px;\n')
+    file.write('    padding-top: 3px;\n')
+    file.write('    padding-bottom: 50px;\n')
+    file.write('    -moz-border-radius: 100px;\n')
+    file.write('    -webkit-border-radius: 100px;\n')
+    file.write('}\n')
+
+    file.write('''table, td, th {
+        border: 2px #cccccc solid;
+        } 
+
+        table {
+        border: 1px solid #aaa;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 20px;
+        overflow: hidden;
+        }
+        table thead th,
+        table th,
+        table td {
+        padding: .6em 3em;
+        border-bottom: 1px solid #aaa;
+        }
+        table thead th {
+        background-color: #ddd;
+        }
+        table th {
+        background-color: #eee;
+        }
+        table thead th + th,
+        table td {
+        border-left: 1px solid #aaa;
+        }
+        table tr:last-child th,
+        table tr:last-child td {
+        border-bottom: none;
+        })''')
+
 
     file.write('</style>\n')
     file.write('<head>\n')
     file.write('<body>\n')
-    file.write('<h1>Test Code Searcher Report</h1>\n')
+    file.write('<h1 align="center">Test Code Searcher Report</h1>\n')
     
 
 #url
@@ -202,17 +250,18 @@ try:
                 print('twoCodeArray : ' + str(len(twoCodeArray)))
                 print('initLineArray : ' + str(len(initLineArray)))
 
-                file.write('<h2>Clone Pairs ' + str(clone_num) +'</h2>\n')
+                file.write('<div id=table-flame>\n')
+                file.write('<h2 align="center">Clone Pairs ' + str(clone_num) +'</h2>\n')
                 file.write('<table border="1" width=50% height="50" align="center">\n')
                 # file.write('<tbody>\n')
                 file.write('<tr>\n')
-                file.write('<th colspan="5" width="500px" height="50%" align="center">Input Code</th>\n')
-                file.write('<th colspan="5" width="500px" height="50%" align="left">\n')
-                file.write('Lines ' + str(pathToCodeInfoDict[key_path][2]) + ' - ' + str(pathToCodeInfoDict[key_path][3]) + ' of ' + pathToCodeInfoDict[key_path][1] + '\n')
-                file.write('</th>\n')
+                file.write('<th colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
+                file.write('<th colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')
+                # file.write('Lines ' + str(pathToCodeInfoDict[key_path][2]) + ' - ' + str(pathToCodeInfoDict[key_path][3]) + ' of ' + pathToCodeInfoDict[key_path][1] + '\n')
+            
                 file.write('</tr>\n')
                 file.write('<tr>\n\n')
-                file.write('<td class="whitecolor" colspan="5" width="500px" height="50%">\n')
+                file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
                 file.write('<pre>\n')
 
                 for line1 in range(0,separator_num):
@@ -227,7 +276,7 @@ try:
 
                 file.write('</pre>\n')
                 file.write('</td>\n')
-                file.write('<td class="whitecolor" colspan="5" width="500px" height="50%">\n')
+                file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
                 file.write('<pre>\n')
                 
                 for line2 in range(separator_num+1,len(twoCodeArray)):
@@ -251,18 +300,26 @@ try:
 
                 items = db.mappingCollection_0123.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
 
+                file.write('<tr>')
+                file.write('<td colspan="6"></td>')
+                file.write('</tr>')
+
+                file.write('<tr>')
+                file.write('<th colspan="6">Test Suite</th>')
+                file.write('</tr>')
+
                 file.write('<tr>\n')
-                file.write('<td bgcolor="#FF9966" width="10%" height="10%" align="center">Assertion Roulette</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Conditional Test Logic</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Constructor Initialization</td>\n')
-                file.write('<td bgcolor="#FF9966" width="10%" height="10%" align="center">Default Test</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Empty Test</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Exception Catching</td>\n\n')
-                file.write('<td class="whitecolor" bgcolor="#FF9966" width="10%" height="10%" align="center">Assertion Roulette</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Conditional Test Logic</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Constructor Initialization</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Default Test</td>\n')
-                file.write('</tr>\n')
+                file.write('<td bgcolor="#FF9966" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="5px" align="center">Constructor Initialization</td>\n')
+                file.write('<td bgcolor="#FF9966" width="10%" height="5px" align="center">Default Test</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="5px" align="center">Empty Test</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="5px" align="center">Exception Catching</td>\n')
+                # file.write('<td class="whitecolor" bgcolor="#FF9966" width="10%" height="10%" align="center">Assertion Roulette</td>\n')
+                # file.write('<td class="whitecolor" width="10%" height="10%" align="center">Conditional Test Logic</td>\n')
+                # file.write('<td class="whitecolor" width="10%" height="10%" align="center">Constructor Initialization</td>\n')
+                # file.write('<td width="10%" height="10%" align="center">Default Test</td>\n')
+                # file.write('</tr>\n')
 
                 for item in items:
                     testline_start = int(item['startline2'])
@@ -275,7 +332,7 @@ try:
                     f.close()
 
                     file.write('<tr>\n')
-                    file.write('<th colspan="10" width="500px" height="50%" align="left">\n')
+                    file.write('<th colspan="6" width="500px" height="50%" align="left">\n')
                     file.write('Lines ' + str(testline_start) + ' - ' + str(testine_end) + ' of ' + testpath + '\n')
                     file.write('</th>\n')
                     file.write('</tr>\n')
@@ -289,7 +346,9 @@ try:
                     file.write('</pre>\n')
                     file.write('</td>\n')
                     file.write('</tr>\n')
-                file.write('</table>')
+                file.write('</table>\n')
+                file.write('</div>\n')
+                file.write('<p></p>')
 
         clone_num += 1
     
