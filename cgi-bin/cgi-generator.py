@@ -82,6 +82,10 @@ def writeHtml():
     file.write('	background-color: white;\n')
     file.write('}\n')
 
+    # file.write('.title {\n')
+    # file.write('    font-weight: bold;\n')
+    # file.write('}\n')
+
     file.write('#table-flame {\n')
     file.write('    background-color: rgba(72,72,72,0.4);\n')
     file.write('    padding-left: 35px;\n')
@@ -118,6 +122,7 @@ def writeHtml():
     file.write('table td {\n')
     file.write('  border-left: 1px solid #aaa;\n')
     file.write('}\n')
+    
     file.write('table tr:last-child th,\n')
     file.write('table tr:last-child td {\n')
     file.write('  border-bottom: none;\n')
@@ -245,8 +250,8 @@ try:
                 file.write('<table border="1" width=50% height="50" align="center">\n')
                 # file.write('<tbody>\n')
                 file.write('<tr>\n')
-                file.write('<th colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
-                file.write('<th colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')
+                file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
+                file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')
                 # file.write('Lines ' + str(pathToCodeInfoDict[key_path][2]) + ' - ' + str(pathToCodeInfoDict[key_path][3]) + ' of ' + pathToCodeInfoDict[key_path][1] + '\n')
             
                 file.write('</tr>\n')
@@ -289,7 +294,7 @@ try:
                 print(pathToCodeInfoDict[key_path][3])
 
                 items = db.mappingCollection_0123.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
-
+             
                 file.write('<tr>')
                 file.write('<td colspan="6"></td>')
                 file.write('</tr>')
@@ -299,17 +304,42 @@ try:
                 file.write('</tr>')
 
                 file.write('<tr>\n')
-                file.write('<td bgcolor="#FF9966" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="5px" align="center">Constructor Initialization</td>\n')
-                file.write('<td bgcolor="#FF9966" width="10%" height="5px" align="center">Default Test</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="5px" align="center">Empty Test</td>\n')
-                file.write('<td class="whitecolor" width="10%" height="5px" align="center">Exception Catching</td>\n')
-                # file.write('<td class="whitecolor" bgcolor="#FF9966" width="10%" height="10%" align="center">Assertion Roulette</td>\n')
-                # file.write('<td class="whitecolor" width="10%" height="10%" align="center">Conditional Test Logic</td>\n')
-                # file.write('<td class="whitecolor" width="10%" height="10%" align="center">Constructor Initialization</td>\n')
-                # file.write('<td width="10%" height="10%" align="center">Default Test</td>\n')
-                # file.write('</tr>\n')
+                if items[0]['Assertion Roulette'] == 'TRUE':
+                    file.write('<td bgcolor="#FF9966" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
+                else:
+                    file.write('<td class="whitecolor" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
+
+                if items[0]['Conditional Test Logic'] == 'TRUE':
+                    file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
+                else:
+                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
+                    
+                if items[0]['Default Test'] == 'TRUE':
+                    file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
+                else:
+                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
+
+                if items[0]['Eager Test'] == 'TRUE':
+                    file.write('<td bgcolor="#FF9966" width="10%" height="5px" align="center">Eager Test</td>\n')
+                else:
+                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Eager Test</td>\n')
+                
+                if items[0]['Exception Catchingowing'] == 'TRUE':
+                    file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
+                else:
+                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
+
+                if items[0]['Mystery Guest'] == 'TRUE':
+                    file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
+                else:
+                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
+
+                print('Assertion Roulette :'  + items[0]['Assertion Roulette'])
+                print('Conditional Test Logic : ' + items[0]['Conditional Test Logic'])
+                print('Default Test : ' + items[0]['Default Test'])
+                print('Eager Test : ' + items[0]['Eager Test'])
+                print('Exception Handling : ' + items[0]['Exception Catchingowing'])
+                print('Mystery Guest : ' + items[0]['Mystery Guest'])
 
                 for item in items:
                     testline_start = int(item['startline2'])
@@ -340,7 +370,7 @@ try:
                 file.write('</div>\n')
                 file.write('<p></p>')
 
-        clone_num += 1
+            clone_num += 1
     
     file.write('</body>\n')
     file.write('</html>\n')
