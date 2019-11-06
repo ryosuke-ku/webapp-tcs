@@ -36,7 +36,7 @@ def writeHtml():
     file.write('}\n')
   
     file.write('h1 {\n')
-    file.write('    margin-top: 25px;')
+    file.write('    margin-top: 25px;\n')
     file.write('    color: white;\n')
     file.write('}\n')
 
@@ -49,7 +49,6 @@ def writeHtml():
     file.write('    padding: 10px; \n')
     file.write('    border-left: 0px;\n')
     file.write('    border-bottom: 0px;\n')
-    # file.write('    background-color: white;\n')
     file.write('}\n')
 
     file.write('th {\n')
@@ -60,13 +59,6 @@ def writeHtml():
     file.write('    border-left: 0px; \n')
     file.write('    border-bottom: 0px; \n')
     file.write('}\n')
-
-    # file.write('table {\n')
-    # file.write('    border-collapse:  collapse;\n')
-    # file.write('    border-collapse: separate;\n')
-    # file.write('    border-spacing: 0;\n')
-    # file.write('    border-radius: 15px;\n')
-    # file.write('}\n')
 
     file.write('mark.red {\n')
     file.write('    background-color: rgb(254, 198, 198);\n')
@@ -100,38 +92,36 @@ def writeHtml():
     file.write('    -webkit-border-radius: 100px;\n')
     file.write('}\n')
 
-    file.write('''table, td, th {
-        border: 2px #cccccc solid;
-        } 
-
-        table {
-        border: 1px solid #aaa;
-        border-collapse: separate;
-        border-spacing: 0;
-        border-radius: 20px;
-        overflow: hidden;
-        }
-        table thead th,
-        table th,
-        table td {
-        padding: .6em 3em;
-        border-bottom: 1px solid #aaa;
-        }
-        table thead th {
-        background-color: #ddd;
-        }
-        table th {
-        background-color: #eee;
-        }
-        table thead th + th,
-        table td {
-        border-left: 1px solid #aaa;
-        }
-        table tr:last-child th,
-        table tr:last-child td {
-        border-bottom: none;
-        })''')
-
+    file.write('table, td, th {\n')
+    file.write('border: 2px #cccccc solid;\n')
+    file.write('}\n')
+    file.write('table {\n')
+    file.write('  border: 1px solid #aaa;\n')
+    file.write('  border-collapse: separate;\n')
+    file.write('  border-spacing: 0;\n')
+    file.write('  border-radius: 20px;\n')
+    file.write('  overflow: hidden;\n')
+    file.write('}\n')
+    file.write('table thead th,\n')
+    file.write('table th,\n')
+    file.write('table td {\n')
+    file.write('  padding: .6em 3em;\n')
+    file.write('  border-bottom: 1px solid #aaa;\n')
+    file.write('}\n')
+    file.write('table thead th {\n')
+    file.write('  background-color: #ddd;\n')
+    file.write('}\n')
+    file.write('table th {\n')
+    file.write('  background-color: #eee;\n')
+    file.write('}\n')
+    file.write('table thead th + th,\n')
+    file.write('table td {\n')
+    file.write('  border-left: 1px solid #aaa;\n')
+    file.write('}\n')
+    file.write('table tr:last-child th,\n')
+    file.write('table tr:last-child td {\n')
+    file.write('  border-bottom: none;\n')
+    file.write('}\n')
 
     file.write('</style>\n')
     file.write('<head>\n')
@@ -250,7 +240,7 @@ try:
                 print('twoCodeArray : ' + str(len(twoCodeArray)))
                 print('initLineArray : ' + str(len(initLineArray)))
 
-                file.write('<div id=table-flame>\n')
+                file.write('<div id="table-flame">\n')
                 file.write('<h2 align="center">Clone Pairs ' + str(clone_num) +'</h2>\n')
                 file.write('<table border="1" width=50% height="50" align="center">\n')
                 # file.write('<tbody>\n')
