@@ -81,6 +81,10 @@ def writeHtml():
     file.write('    padding-right: 5px;\n')
     file.write('}\n')
 
+    file.write('.whitecolor {')
+	file.write('background-color: white;')
+    file.write('}\n')
+
     file.write('</style>\n')
     file.write('<head>\n')
     file.write('<body>\n')
@@ -97,7 +101,7 @@ html = request.urlopen(url)
 soup = BeautifulSoup(html, "html.parser")
 
 clint = MongoClient('163.221.190.202')
-db = clint['testMapList']
+db = clint['testMapList_0123']
 
 codeArray = []
 codePathArray = []
@@ -208,7 +212,7 @@ try:
                 file.write('</th>\n')
                 file.write('</tr>\n')
                 file.write('<tr>\n\n')
-                file.write('<td colspan="5" width="500px" height="50%">\n')
+                file.write('<td class="whitecolor" colspan="5" width="500px" height="50%">\n')
                 file.write('<pre>\n')
 
                 for line1 in range(0,separator_num):
@@ -223,7 +227,7 @@ try:
 
                 file.write('</pre>\n')
                 file.write('</td>\n')
-                file.write('<td colspan="5" width="500px" height="50%">\n')
+                file.write('<td class="whitecolor" colspan="5" width="500px" height="50%">\n')
                 file.write('<pre>\n')
                 
                 for line2 in range(separator_num+1,len(twoCodeArray)):
@@ -241,25 +245,25 @@ try:
                 file.write('</td>\n')
                 file.write('</tr>\n')
 
-                file.write('<tr>\n')
-                file.write('<td bgcolor="#FF9966" width="10%" height="10%" align="center">Assertion Roulette</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Conditional Test Logic</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Constructor Initialization</td>\n')
-                file.write('<td bgcolor="#FF9966" width="10%" height="10%" align="center">Default Test</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Empty Test</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Exception Catching</td>\n\n')
-                file.write('<td bgcolor="#FF9966" width="10%" height="10%" align="center">Assertion Roulette</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Conditional Test Logic</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Constructor Initialization</td>\n')
-                file.write('<td width="10%" height="10%" align="center">Default Test</td>\n')
-                file.write('</tr>\n')
-
                 print(pathToCodeInfoDict[key_path][1])
                 print(pathToCodeInfoDict[key_path][2])
                 print(pathToCodeInfoDict[key_path][3])
 
-                items = db.mapingCollection.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
-           
+                items = db.mappingCollection_0123.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
+
+                file.write('<tr>\n')
+                file.write('<td bgcolor="#FF9966" width="10%" height="10%" align="center">Assertion Roulette</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Conditional Test Logic</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Constructor Initialization</td>\n')
+                file.write('<td bgcolor="#FF9966" width="10%" height="10%" align="center">Default Test</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Empty Test</td>\n')
+                file.write('<td width="10%" height="10%" align="center">Exception Catching</td>\n\n')
+                file.write('<td class="whitecolor" bgcolor="#FF9966" width="10%" height="10%" align="center">Assertion Roulette</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Conditional Test Logic</td>\n')
+                file.write('<td class="whitecolor" width="10%" height="10%" align="center">Constructor Initialization</td>\n')
+                file.write('<td width="10%" height="10%" align="center">Default Test</td>\n')
+                file.write('</tr>\n')
+
                 for item in items:
                     testline_start = int(item['startline2'])
                     testine_end = int(item['endline2'])
@@ -276,7 +280,7 @@ try:
                     file.write('</th>\n')
                     file.write('</tr>\n')
                     file.write('<tr>\n')
-                    file.write('<td colspan="10" width="500px" height="50%">\n')
+                    file.write('<td class="whitecolor" colspan="10" width="500px" height="50%">\n')
                     file.write('<pre>\n')
                     
                     for x in range(testline_start,testine_end):
