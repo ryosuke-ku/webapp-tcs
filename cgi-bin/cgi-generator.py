@@ -248,7 +248,6 @@ try:
                 file.write('<div id="table-flame">\n')
                 file.write('<h2 align="center">Clone Pairs ' + str(clone_num) +'</h2>\n')
                 file.write('<table border="1" width=50% height="50" align="center">\n')
-                # file.write('<tbody>\n')
                 file.write('<tr>\n')
                 file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
                 file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')
@@ -263,7 +262,6 @@ try:
                     line_mark1 = twoCodeArray[line1][:1]
                     if line_mark1 == '!':
                         file.write('<mark class="red">' + twoCodeArray[line1] + '</mark>' + '\n')
-                        # print(twoCodeArray[line1])
                     elif line_mark1 == '+':
                         file.write('<mark class="yellow">' + twoCodeArray[line1] + '</mark>' + '\n')
                     else:
@@ -279,7 +277,6 @@ try:
                     # print(line_mark)
                     if line_mark2 == '!':
                         file.write('<mark class="green">' + twoCodeArray[line2] + '</mark>' + '\n')
-                        # print(twoCodeArray[line2])
                     elif line_mark2 == '+':
                         file.write('<mark class="yellow">' + twoCodeArray[line2] + '</mark>' + '\n')
                     else:
