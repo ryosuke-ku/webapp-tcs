@@ -230,14 +230,17 @@ try:
             line_num = 1
             print('-----------------------------------------')
             for diff_line in diff_lines:
-                print(diff_line)
+                # print(diff_line)
                 if line_num >= 1 and line_num <= 4:
                     pass
                 else:
                     line_init = diff_line[:3]
+                    # print('line_init : ' + line_init)
                     initLineArray.append(line_init)
                     twoCodeArray.append(diff_line)
                 line_num += 1
+            
+
             
             if len(initLineArray) != 0:
 
@@ -258,30 +261,59 @@ try:
                 file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
                 file.write('<pre>\n')
 
+                line1_diff = 0
+                line1_num = 0
                 for line1 in range(0,separator_num):
+                    line1_num += 1
                     line_mark1 = twoCodeArray[line1][:1]
                     if line_mark1 == '!':
                         file.write('<mark class="red">' + twoCodeArray[line1] + '</mark>' + '\n')
+                        line1_diff += 1
                     elif line_mark1 == '+':
                         file.write('<mark class="yellow">' + twoCodeArray[line1] + '</mark>' + '\n')
+                        line1_diff += 1
+                    elif line_mark1 == '-':
+                        line1_diff += 1
                     else:
                         file.write(twoCodeArray[line1] + '\n')  
+                print('Total line1 diff : ' + str(line1_diff))
+                print('Total line1 num  : ' + str(line1_num))
+                upi1 = line1_diff/line1_num
+                print('line1 UPI : ' + str(upi1))
 
                 file.write('</pre>\n')
                 file.write('</td>\n')
                 file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
                 file.write('<pre>\n')
                 
+                line2_diff = 0
+                line2_num = 0 
                 for line2 in range(separator_num+1,len(twoCodeArray)):
+                    line2_num += 1
                     line_mark2 = twoCodeArray[line2][:1]
                     # print(line_mark)
                     if line_mark2 == '!':
                         file.write('<mark class="green">' + twoCodeArray[line2] + '</mark>' + '\n')
+                        line2_diff += 1
                     elif line_mark2 == '+':
                         file.write('<mark class="yellow">' + twoCodeArray[line2] + '</mark>' + '\n')
+                        line2_diff += 1
+                    elif line_mark2 == '-':
+                        line2_diff += 1
                     else:
                         file.write(twoCodeArray[line2] + '\n')
-                
+                    
+                print('Total line2 diff : ' + str(line2_diff))
+                print('Total line2 num  : ' + str(line2_num))
+                upi2 = line2_diff/line2_num
+                print('line2 UPI : ' + str(upi2))
+
+                if upi1 >= upi2:
+                    UPI = upi1
+                else:
+                    UPI = upi2
+                print('UPI : ' + str(UPI))
+
                 file.write('</pre>\n')
                 file.write('</td>\n')
                 file.write('</tr>\n')
