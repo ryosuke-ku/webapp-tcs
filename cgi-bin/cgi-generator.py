@@ -222,14 +222,15 @@ try:
 
             code1 = pathToCodeInfoDict[input_path][0][1:].splitlines ()
             code2 = pathToCodeInfoDict[key_path][0][1:].splitlines ()
+        
+            diff_lines = difflib.context_diff (code1, code2, 'name-version.orig/test.txt', 'name-version/test.txt', time.strftime ('%Y-%m-%d %H:%M:%S', time.localtime(1212121212)), time.strftime ('%Y-%m-%d %H:%M:%S', time.localtime(1313131313)), 100, '')
 
-            diff_lines = difflib.context_diff (code1, code2, 'name-version.orig/test.txt', 'name-version/test.txt', time.strftime ('%Y-%m-%d %H:%M:%S', time.localtime(1212121212)), time.strftime ('%Y-%m-%d %H:%M:%S', time.localtime(1313131313)), 3, '')
-    
             twoCodeArray = []
             initLineArray = []
             line_num = 1
             print('-----------------------------------------')
             for diff_line in diff_lines:
+                print(diff_line)
                 if line_num >= 1 and line_num <= 4:
                     pass
                 else:
@@ -239,9 +240,8 @@ try:
                 line_num += 1
             
             if len(initLineArray) != 0:
-                # print(initLineArray)
+
                 separator_num = initLineArray.index('---')
-                # print(separator_num)
                 print('twoCodeArray : ' + str(len(twoCodeArray)))
                 print('initLineArray : ' + str(len(initLineArray)))
 
@@ -289,9 +289,9 @@ try:
                 file.write('</td>\n')
                 file.write('</tr>\n')
 
-                print(pathToCodeInfoDict[key_path][1])
-                print(pathToCodeInfoDict[key_path][2])
-                print(pathToCodeInfoDict[key_path][3])
+                print('path : ' + pathToCodeInfoDict[key_path][1])
+                print('start line : ' + str(pathToCodeInfoDict[key_path][2]))
+                print('end line : ' + str(pathToCodeInfoDict[key_path][3]))
 
                 items = db.mappingCollection_0123.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
              
@@ -304,33 +304,42 @@ try:
                 file.write('</tr>')
 
                 file.write('<tr>\n')
+
+                testsmell_num = 0
+
                 if items[0]['Assertion Roulette'] == 'TRUE':
                     file.write('<td bgcolor="#FF9966" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
+                    testsmell_num +=1
                 else:
                     file.write('<td class="whitecolor" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
 
                 if items[0]['Conditional Test Logic'] == 'TRUE':
                     file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
+                    testsmell_num +=1
                 else:
                     file.write('<td class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
                     
                 if items[0]['Default Test'] == 'TRUE':
                     file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
+                    testsmell_num +=1
                 else:
                     file.write('<td class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
 
                 if items[0]['Eager Test'] == 'TRUE':
                     file.write('<td bgcolor="#FF9966" width="10%" height="5px" align="center">Eager Test</td>\n')
+                    testsmell_num +=1
                 else:
                     file.write('<td class="whitecolor" width="10%" height="5px" align="center">Eager Test</td>\n')
                 
                 if items[0]['Exception Catchingowing'] == 'TRUE':
                     file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
+                    testsmell_num +=1
                 else:
                     file.write('<td class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
 
                 if items[0]['Mystery Guest'] == 'TRUE':
                     file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
+                    testsmell_num +=1
                 else:
                     file.write('<td class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
 
@@ -340,12 +349,13 @@ try:
                 print('Eager Test : ' + items[0]['Eager Test'])
                 print('Exception Handling : ' + items[0]['Exception Catchingowing'])
                 print('Mystery Guest : ' + items[0]['Mystery Guest'])
+                print('Total Test Smells : ' + str(testsmell_num))
 
                 for item in items:
                     testline_start = int(item['startline2'])
                     testine_end = int(item['endline2'])
                     testpath = item['testpath']
-                    print(testpath)
+                    # print(testpath)
                     testpath_full = '/Users/ryosuke/Desktop/TCS/0123/' + testpath
                     f = open(testpath_full, "r", encoding="utf-8")
                     lines_origin = f.readlines() # 1行毎にファイル終端まで全て読む(改行文字も含まれる)
@@ -370,7 +380,7 @@ try:
                 file.write('</div>\n')
                 file.write('<p></p>')
 
-            clone_num += 1
+                clone_num += 1
     
     file.write('</body>\n')
     file.write('</html>\n')
@@ -388,6 +398,7 @@ except IndexError:
     file.write('}\n')
   
     file.write('h1 {\n')
+    file.write('    margin-top: 50px;\n')
     file.write('    color: white;\n')
     file.write('}\n')
 
