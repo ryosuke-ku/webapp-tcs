@@ -34,20 +34,20 @@ with redirect_stdout(open(os.devnull, 'w')):
     os.chdir('/Users/ryosuke/Desktop/webapp-tcs/cgi-bin/')
     # print(os.getcwd())
 
-    os.system('python cgi-generation.py')
+    os.system('python cgi-generator.py')
 
-    shutil.rmtree("/Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/systems_functions-blind-clones")
-    print('Deleted NiCad generation folder!')
+    # shutil.rmtree("/Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/systems_functions-blind-clones")
+    # print('Deleted NiCad generation folder!')
 
-    NICAD_functionPath_xml = glob.glob('/Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/*.xml')
-    for functionPath_xml in NICAD_functionPath_xml:
-        os.remove(functionPath_xml)
-    print('Deleted xml file!')
+    # NICAD_functionPath_xml = glob.glob('/Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/*.xml')
+    # for functionPath_xml in NICAD_functionPath_xml:
+    #     os.remove(functionPath_xml)
+    # print('Deleted xml file!')
 
-    NICAD_functionPath_log = glob.glob('/Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/*.log')
-    for functionPath_log in NICAD_functionPath_log:
-        os.remove(functionPath_log)
-    print('Deleted log file!')
+    # NICAD_functionPath_log = glob.glob('/Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/*.log')
+    # for functionPath_log in NICAD_functionPath_log:
+    #     os.remove(functionPath_log)
+    # print('Deleted log file!')
 
 # 初回ロード時
 if form.list == []:
@@ -59,5 +59,5 @@ else:
 print("")
 print(html)
 
-os.remove('/Users/ryosuke/Desktop/webapp-tcs/TCS_result.html')
-print('Deleted TCS_result file!')
+# os.remove('/Users/ryosuke/Desktop/webapp-tcs/TCS_result.html')
+# print('Deleted TCS_result file!')
