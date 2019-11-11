@@ -216,6 +216,9 @@ try:
     file = open('../TCS_result.html','w')
     writeHtml()
     clone_num = 1
+
+    sortItemDict = defaultdict(list)
+
     for key_path in pathInfos:
         # print(key_path)
         if 'projects/systems/a.java' not in key_path:
@@ -241,7 +244,7 @@ try:
                 line_num += 1
             
 
-            
+            sortItemArray = []
             if len(initLineArray) != 0:
 
                 separator_num = initLineArray.index('---')
@@ -261,9 +264,11 @@ try:
                 file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
                 file.write('<pre>\n')
 
+                code1List = []
                 line1_diff = 0
                 line1_num = 0
                 for line1 in range(0,separator_num):
+                    code1List.append(twoCodeArray[line1])
                     line1_num += 1
                     line_mark1 = twoCodeArray[line1][:1]
                     if line_mark1 == '!':
@@ -275,7 +280,14 @@ try:
                     elif line_mark1 == '-':
                         line1_diff += 1
                     else:
-                        file.write(twoCodeArray[line1] + '\n')  
+                        file.write(twoCodeArray[line1] + '\n')
+
+                print('code1')
+                for code1 in code1List:
+                    print(code1)
+
+                sortItemArray.append(code1)
+
                 print('Total line1 diff : ' + str(line1_diff))
                 print('Total line1 num  : ' + str(line1_num))
                 upi1 = line1_diff/line1_num
@@ -286,9 +298,11 @@ try:
                 file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
                 file.write('<pre>\n')
                 
+                code2List = []
                 line2_diff = 0
                 line2_num = 0 
                 for line2 in range(separator_num+1,len(twoCodeArray)):
+                    code2List.append(twoCodeArray[line2])
                     line2_num += 1
                     line_mark2 = twoCodeArray[line2][:1]
                     # print(line_mark)
@@ -302,7 +316,13 @@ try:
                         line2_diff += 1
                     else:
                         file.write(twoCodeArray[line2] + '\n')
-                    
+
+                print('code2')
+                for code2 in code2List:
+                    print(code2)
+
+                sortItemArray.append(code2)
+
                 print('Total line2 diff : ' + str(line2_diff))
                 print('Total line2 num  : ' + str(line2_num))
                 upi2 = line2_diff/line2_num
@@ -314,6 +334,7 @@ try:
                     UPI = upi2
                 print('UPI : ' + str(UPI))
 
+                sortItemArray.append(UPI)
                 file.write('</pre>\n')
                 file.write('</td>\n')
                 file.write('</tr>\n')
