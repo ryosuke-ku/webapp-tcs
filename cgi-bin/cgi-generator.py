@@ -164,7 +164,6 @@ pathToFragmentDict = defaultdict(list)
 pathToCodeInfoDict = defaultdict(list)
 
 try:
-
     for item in bodyCode.find_all(['h3', 'table']):
         pathArray = []
         if item.name == 'h3':
@@ -279,6 +278,7 @@ try:
                         file.write('<mark class="yellow">' + twoCodeArray[line1] + '</mark>' + '\n')
                         line1_diff += 1
                     elif line_mark1 == '-':
+                        file.write(twoCodeArray[line1] + '\n')
                         line1_diff += 1
                     else:
                         file.write(twoCodeArray[line1] + '\n')
@@ -314,6 +314,7 @@ try:
                         file.write('<mark class="yellow">' + twoCodeArray[line2] + '</mark>' + '\n')
                         line2_diff += 1
                     elif line_mark2 == '-':
+                        file.write(twoCodeArray[line2] + '\n')
                         line2_diff += 1
                     else:
                         file.write(twoCodeArray[line2] + '\n')
