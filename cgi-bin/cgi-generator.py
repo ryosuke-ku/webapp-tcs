@@ -143,8 +143,9 @@ html = request.urlopen(url)
 #set BueatifulSoup
 soup = BeautifulSoup(html, "html.parser")
 
-clint = MongoClient('163.221.190.202')
-db = clint['testMapList_0123']
+# clint = MongoClient('163.221.190.202') #外部サーバーのデータベースにアクセス
+clint =MongoClient() #ローカルのデータベースにアクセス
+db = clint['testMapList_utility'] 
 
 codeArray = []
 codePathArray = []
@@ -343,7 +344,7 @@ try:
                 print('start line : ' + str(pathToCodeInfoDict[key_path][2]))
                 print('end line : ' + str(pathToCodeInfoDict[key_path][3]))
 
-                items = db.mappingCollection_0123.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
+                items = db.mappingCollection_utility.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
              
                 file.write('<tr>')
                 file.write('<td colspan="6"></td>')
