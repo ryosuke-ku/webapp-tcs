@@ -28,7 +28,6 @@ class rdict(dict):
 def writeHtml():
     file.write('<html>\n')
     file.write('<head>\n')
-    file.write('<link rel = "icon" href="image/tcs.ico">\n')
     file.write('<title>Test Code Searcher Report</title>\n')
     file.write('<style>\n')
     file.write('body {\n')
