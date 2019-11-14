@@ -158,6 +158,19 @@ def writeHtml():
     file.write('<body>\n')
     file.write('<h1 align="center">Test Code Searcher Report</h1>\n')
     
+def countDiff_line(array):
+    print('codeList')
+    line_diff = 0 
+    for code_line in array:
+        print(code_line)
+        if code_line[:1] == '!' or code_line[:1] == '-' or code_line[:1] == '+':
+            line_diff += 1
+    
+    return line_diff
+
+def calcUPI(line_diff,line_num):
+    upi = line_diff/line_num
+    return upi 
 
 #url
 url = "file:///Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/systems_functions-blind-clones/systems_functions-blind-clones-0.30-classes-withsource.html"
@@ -285,18 +298,17 @@ try:
             
                 file.write('</tr>\n')
 
-                code1List = []
-                line1_diff = 0
+                code1List = [] 
                 line1_num = 0
                 for line1 in range(0,separator_num):
                     code1List.append(twoCodeArray[line1])
                     line1_num += 1
 
-                sortItemArray.append(code1)
+                line1_diff = countDiff_line(code1List)
 
                 print('Total line1 diff : ' + str(line1_diff))
                 print('Total line1 num  : ' + str(line1_num))
-                upi1 = line1_diff/line1_num
+                upi1 = calcUPI(line1_diff,line1_num)
                 print('line1 UPI : ' + str(upi1))
                 
                 code2List = []
@@ -306,13 +318,11 @@ try:
                     code2List.append(twoCodeArray[line2])
                     line2_num += 1
 
-
-
-                sortItemArray.append(code2)
+                line2_diff = countDiff_line(code2List)
 
                 print('Total line2 diff : ' + str(line2_diff))
                 print('Total line2 num  : ' + str(line2_num))
-                upi2 = line2_diff/line2_num
+                upi2 = calcUPI(line2_diff,line2_num)
                 print('line2 UPI : ' + str(upi2))
 
                 if upi1 >= upi2:
@@ -337,14 +347,14 @@ try:
                         if code1List[row_num][:1] != code2List[row_num][:1]:
                             start = row_num
                             if code1List[row_num][:1] == '!' or code1List[row_num][:1] == '+' or code1List[row_num][:1] == '-':
-                                code2List.insert(row_num,'s')
+                                code2List.insert(row_num,'*')
                                 if len(code1List) <= len(code2List):
                                     code_row = len(code1List)
                                 else:
                                     code_row = len(code2List)
                                 
                             elif code1List[row_num][:1] == ' ':
-                                code1List.insert(row_num,'s')
+                                code1List.insert(row_num,'*')
                                 if len(code1List) <= len(code2List):
                                     code_row = len(code1List)
                                 else:
@@ -352,13 +362,13 @@ try:
                         else:
                             pass
 
-                print('code1List')
-                for code1 in code1List:
-                    print(code1)
+                # print('code1List')
+                # for code1 in code1List:
+                #     print(code1)
 
-                print('code2List')
-                for code2 in code2List:
-                    print(code2)
+                # print('code2List')
+                # for code2 in code2List:
+                #     print(code2)
 
                 file.write('<tr>\n\n')
                 file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
@@ -448,7 +458,7 @@ try:
                     elif line_mark1 == '-':
                         file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
                         line1_diff += 1
-                    elif line_mark1 == 's':
+                    elif line_mark1 == '*':
                         for add_num in range(add_spc):
                             code1_line = code1_line + '  '
                         file.write('<mark class="grey">' + code1_line + '</mark>' + '\n')
@@ -481,7 +491,7 @@ try:
                     elif line_mark2 == '-':
                         file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
                         line2_diff += 1
-                    elif line_mark2 == 's':
+                    elif line_mark2 == '*':
                         for add_num in range(add_spc):
                             code2_line = code2_line + '  '
                         file.write('<mark class="grey">' + code2_line + '</mark>' + '\n')
