@@ -170,7 +170,86 @@ def countDiff_line(array):
 
 def calcUPI(line_diff,line_num):
     upi = line_diff/line_num
-    return upi 
+    return upi
+
+def generateHTML(sortedItemArray,clone_num):
+    # file = open('../TCS_result.html','w')
+    writeHtml()
+    for num in range(clone_num):
+        similarity = round((1 - sortedItemArray[num][0])*100,1)
+        file.write('<div id="table-flame">\n')
+        file.write('<h2 align="center">Clone Pairs ' + str(num + 1) + ' : ' + str(similarity) + '%' + '</h2>\n')
+        file.write('<table border="1" width=50% height="50" align="center">\n')
+        file.write('<tr>\n')
+        file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
+        file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')            
+        file.write('</tr>\n')
+        file.write('<tr>\n')
+        file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
+        file.write('<pre>\n')
+       
+        for frag1_line in sortedItemArray[num][11]:
+            file.write(frag1_line + '\n')
+        
+        file.write('</pre>\n')
+        file.write('</td>\n')
+        file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
+        file.write('<pre>\n')        
+        
+        for frag2_line in sortedItemArray[num][12]:
+            file.write(frag2_line + '\n')
+        
+        file.write('</pre>\n')
+        file.write('</td>\n')
+        file.write('</tr>\n')
+        file.write('<tr>')
+        file.write('<td colspan="6"></td>')
+        file.write('</tr>')
+        file.write('<tr>')
+        file.write('<th colspan="6">Test Suite</th>')
+        file.write('</tr>')
+        file.write('<tr>\n')
+        file.write(sortedItemArray[num][5])
+        file.write(sortedItemArray[num][6])
+        file.write(sortedItemArray[num][7])
+        file.write(sortedItemArray[num][8])
+        file.write(sortedItemArray[num][9])
+        file.write(sortedItemArray[num][10])
+
+        items = db.mappingCollection_utility.find({'path':sortedItemArray[num][2],'startline1':sortedItemArray[num][3],'endline1':sortedItemArray[num][4]})
+
+        for item in items:
+            testline_start = int(item['startline2'])
+            testine_end = int(item['endline2'])
+            testpath = item['testpath']
+            # print(testpath)
+            testpath_full = '/Users/ryosuke/Desktop/TCS/0123/' + testpath
+            f = open(testpath_full, "r", encoding="utf-8")
+            lines_origin = f.readlines() # 1行毎にファイル終端まで全て読む(改行文字も含まれる)
+            f.close()
+
+            file.write('<tr>\n')
+            file.write('<th colspan="6" width="500px" height="50%" align="left">\n')
+            file.write('Lines ' + str(testline_start) + ' - ' + str(testine_end) + ' of ' + testpath + '\n')
+            file.write('</th>\n')
+            file.write('</tr>\n')
+            file.write('<tr>\n')
+            file.write('<td class="whitecolor" colspan="10" width="500px" height="50%">\n')
+            file.write('<pre>\n')
+
+            for x in range(testline_start,testine_end):
+                file.write(lines_origin[x].replace('\n', '') + '\n')
+
+            file.write('</pre>\n')
+            file.write('</td>\n')
+            file.write('</tr>\n')
+        file.write('</table>\n')
+        file.write('</div>\n')
+        file.write('<p></p>')
+        file.write('</body>\n')
+        file.write('</html>\n')
+
+
 
 #url
 url = "file:///Users/ryosuke/Desktop/webapp-tcs/cgi-bin/NiCad-5.0/projects/systems_functions-blind-clones/systems_functions-blind-clones-0.30-classes-withsource.html"
@@ -251,14 +330,16 @@ try:
             input_path = detected_path
             # print(input_path)
 
-    file = open('../TCS_result.html','w')
-    writeHtml()
+    # file = open('../TCS_result.html','w')
+    # writeHtml()
     clone_num = 1
 
     sortItemDict = defaultdict(list)
+    
 
     for key_path in pathInfos:
-        # print(key_path)
+        sortItemArray = []
+        # print('key_path : ' + key_path)
         if 'projects/systems/a.java' not in key_path:
 
             code1 = pathToCodeInfoDict[input_path][0][1:].splitlines ()
@@ -281,22 +362,20 @@ try:
                     twoCodeArray.append(diff_line)
                 line_num += 1
             
-            sortItemArray = []
+            
             if len(initLineArray) != 0:
 
                 separator_num = initLineArray.index('---')
                 print('twoCodeArray : ' + str(len(twoCodeArray)))
                 print('initLineArray : ' + str(len(initLineArray)))
 
-                file.write('<div id="table-flame">\n')
-                file.write('<h2 align="center">Clone Pairs ' + str(clone_num) +'</h2>\n')
-                file.write('<table border="1" width=50% height="50" align="center">\n')
-                file.write('<tr>\n')
-                file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
-                file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')
-                # file.write('Lines ' + str(pathToCodeInfoDict[key_path][2]) + ' - ' + str(pathToCodeInfoDict[key_path][3]) + ' of ' + pathToCodeInfoDict[key_path][1] + '\n')
-            
-                file.write('</tr>\n')
+                # file.write('<div id="table-flame">\n')
+                # file.write('<h2 align="center">Clone Pairs ' + str(clone_num) +'</h2>\n')
+                # file.write('<table border="1" width=50% height="50" align="center">\n')
+                # file.write('<tr>\n')
+                # file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
+                # file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')            
+                # file.write('</tr>\n')
 
                 code1List = [] 
                 line1_num = 0
@@ -370,9 +449,9 @@ try:
                 # for code2 in code2List:
                 #     print(code2)
 
-                file.write('<tr>\n\n')
-                file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
-                file.write('<pre>\n')                         
+                # file.write('<tr>\n\n')
+                # file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
+                # file.write('<pre>\n')                         
 
                 max_row1 = 0
                 for code_item in code1List:
@@ -442,7 +521,62 @@ try:
                             code1List_highlight.append(code1List[num])
                             code2List_highlight.append(code2List[num])
 
+                
 
+                items = db.mappingCollection_utility.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
+                smell_count = 0
+            
+                for smell in items[0].values():
+                    # print(smell)
+                    if smell == 'TRUE':
+                        smell_count += 1
+                print('smell_count : ' + str(smell_count))
+                sortItemArray.append(smell_count)
+                print(sortItemArray)
+
+                sortItemArray.append(pathToCodeInfoDict[key_path][1])
+                sortItemArray.append(int(pathToCodeInfoDict[key_path][2]))
+                sortItemArray.append(int(pathToCodeInfoDict[key_path][3]))
+
+                if items[0]['Assertion Roulette'] == 'TRUE':
+                    sortItemArray.append('<td bgcolor="#FF9966" width="10%" height="5spx" align="center">Assertion Roulette</td>')
+                
+                else:
+                    sortItemArray.append('<td class="whitecolor" width="10%" height="5spx" align="center">Assertion Roulette</td>')
+
+                if items[0]['Conditional Test Logic'] == 'TRUE':
+                    sortItemArray.append('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>')
+                
+                else:
+                    sortItemArray.append('<td class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>')
+                
+                if items[0]['Default Test'] == 'TRUE':
+                    sortItemArray.append('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Default Test</td>')
+                
+                else:
+                    sortItemArray.append('<td class="whitecolor" width="10%" height="5px" align="center">Default Test</td>')
+                
+                if items[0]['Eager Test'] == 'TRUE':
+                    sortItemArray.append('<td bgcolor="#FF9966" width="10%" height="5px" align="center">Eager Test</td>')
+                
+                else:
+                    sortItemArray.append('<td class="whitecolor" width="10%" height="5px" align="center">Eager Test</td>')
+                
+                if items[0]['Exception Catchingowing'] == 'TRUE':
+                    sortItemArray.append('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>')
+           
+                else:
+                    sortItemArray.append('<td class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>')
+
+                if items[0]['Mystery Guest'] == 'TRUE':
+                    sortItemArray.append('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>')
+              
+                else:
+                    sortItemArray.append('<td class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>')
+
+                print(sortItemArray)
+
+                code1List_output = []
                 print('code1List_highlight')
                 for code1_line in code1List_highlight:
                     print(code1_line)
@@ -450,27 +584,33 @@ try:
                     add_spc = max_row1 - len(code1_line)
                     line_mark1 = code1_line[:1]
                     if line_mark1 == '!':
-                        file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
+                        # file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
+                        code1List_output.append('<mark class="red">' + code1_line + '</mark>')
                         line1_diff += 1
                     elif line_mark1 == '+':
-                        file.write('<mark class="yellow">' + code1_line + '</mark>' + '\n')
+                        # file.write('<mark class="yellow">' + code1_line + '</mark>' + '\n')
+                        code1List_output.append('<mark class="yellow">' + code1_line + '</mark>')
                         line1_diff += 1
                     elif line_mark1 == '-':
-                        file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
+                        # file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
+                        code1List_output.append('<mark class="red">' + code1_line + '</mark>')
                         line1_diff += 1
                     elif line_mark1 == '*':
                         for add_num in range(add_spc):
                             code1_line = code1_line + '  '
-                        file.write('<mark class="grey">' + code1_line + '</mark>' + '\n')
+                        # file.write('<mark class="grey">' + code1_line + '</mark>' + '\n')
+                        code1List_output.append('<mark class="grey">' + code1_line + '</mark>')
                         line1_diff += 1
                     else:
-                        file.write(code1_line + '\n')   
+                        # file.write(code1_line + '\n')
+                        code1List_output.append(code1_line)   
 
-                file.write('</pre>\n')
-                file.write('</td>\n')
-                file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
-                file.write('<pre>\n')
+                # file.write('</pre>\n')
+                # file.write('</td>\n')
+                # file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
+                # file.write('<pre>\n')
 
+                code2List_output = []
                 max_row2 = 0
                 for code_item in code2List:
                     if max_row2 <=len(code_item):
@@ -483,118 +623,71 @@ try:
                     add_spc = max_row2 - len(code2_line)
                     line_mark2 = code2_line[:1]
                     if line_mark2 == '!':
-                        file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
+                        # file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
+                        code2List_output.append('<mark class="green">' + code2_line + '</mark>')
                         line2_diff += 1
                     elif line_mark2 == '+':
-                        file.write('<mark class="yellow">' + code2_line + '</mark>' + '\n')
+                        # file.write('<mark class="yellow">' + code2_line + '</mark>' + '\n')
+                        code2List_output.append('<mark class="yellow">' + code2_line + '</mark>')
                         line2_diff += 1
                     elif line_mark2 == '-':
-                        file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
+                        # file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
+                        code2List_output.append('<mark class="green">' + code2_line + '</mark>')
                         line2_diff += 1
                     elif line_mark2 == '*':
                         for add_num in range(add_spc):
                             code2_line = code2_line + '  '
-                        file.write('<mark class="grey">' + code2_line + '</mark>' + '\n')
+                        # file.write('<mark class="grey">' + code2_line + '</mark>' + '\n')
+                        code2List_output.append('<mark class="grey">' + code2_line + '</mark>')
                         line2_diff += 1
                     else:
-                        file.write(code2_line + '\n')
+                        # file.write(code2_line + '\n')
+                        code2List_output.append(code2_line)
 
-                file.write('</pre>\n')
-                file.write('</td>\n')
-                file.write('</tr>\n')
+                print('code1List_output')
+                for code1_output_line in code1List_output:
+                    print(code1_output_line)
 
-                items = db.mappingCollection_utility.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
-                
-                file.write('<tr>')
-                file.write('<td colspan="6"></td>')
-                file.write('</tr>')
+                print('code2List_output')
+                for code2_output_line in code2List_output:
+                    print(code2_output_line)
 
-                file.write('<tr>')
-                file.write('<th colspan="6">Test Suite</th>')
-                file.write('</tr>')
+                sortItemArray.append(code1List_output)
+                sortItemArray.append(code2List_output)
+                print('sortItemArray ' + str(len(sortItemArray)))
+                sortItemDict[key_path] = sortItemArray
 
-                file.write('<tr>\n')
+    for i in sortItemDict:
+        print(i)
+        print(sortItemDict[i][0])
+        print(sortItemDict[i][1])
+    
+    code_sorted = sorted(sortItemDict.items(), key=lambda x: (x[1][0], -x[1][1]))
+    sortedItemArray = []
+    for sorted_key in code_sorted:
+        # print(sorted_key[1])
+        sortedItemArray.append(sorted_key[1])
+    print(sortedItemArray)
+    codefrag_num = len(sortedItemArray)
 
-                testsmell_num = 0
+    file = open('../TCS_result.html','w')
+    generateHTML(sortedItemArray,codefrag_num)
+    # dct = {
+    #         'apple': [1,20,'aaaa'],
+    #         'banana': [5,40],
+    #         'melon': [3,10,'dddd'],
+    #         'potato': [3,20],
+    #         'carrot': [5,80]
+    #     }
 
-                if items[0]['Assertion Roulette'] == 'TRUE':
-                    file.write('<td bgcolor="#FF9966" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
-                    testsmell_num +=1
-                else:
-                    file.write('<td class="whitecolor" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
+    # dct_sorted = sorted(dct.items(), key=lambda x: (x[1][0], -x[1][1]))
+    # print(dct_sorted)
+    # for i in dct_sorted:
+    #     print(i[1])
 
-                if items[0]['Conditional Test Logic'] == 'TRUE':
-                    file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
-                    testsmell_num +=1
-                else:
-                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
-                    
-                if items[0]['Default Test'] == 'TRUE':
-                    file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
-                    testsmell_num +=1
-                else:
-                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
 
-                if items[0]['Eager Test'] == 'TRUE':
-                    file.write('<td bgcolor="#FF9966" width="10%" height="5px" align="center">Eager Test</td>\n')
-                    testsmell_num +=1
-                else:
-                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Eager Test</td>\n')
-                
-                if items[0]['Exception Catchingowing'] == 'TRUE':
-                    file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
-                    testsmell_num +=1
-                else:
-                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
 
-                if items[0]['Mystery Guest'] == 'TRUE':
-                    file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
-                    testsmell_num +=1
-                else:
-                    file.write('<td class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
-
-                print('Assertion Roulette :'  + items[0]['Assertion Roulette'])
-                print('Conditional Test Logic : ' + items[0]['Conditional Test Logic'])
-                print('Default Test : ' + items[0]['Default Test'])
-                print('Eager Test : ' + items[0]['Eager Test'])
-                print('Exception Handling : ' + items[0]['Exception Catchingowing'])
-                print('Mystery Guest : ' + items[0]['Mystery Guest'])
-                print('Total Test Smells : ' + str(testsmell_num))
-
-                for item in items:
-                    testline_start = int(item['startline2'])
-                    testine_end = int(item['endline2'])
-                    testpath = item['testpath']
-                    # print(testpath)
-                    testpath_full = '/Users/ryosuke/Desktop/TCS/0123/' + testpath
-                    f = open(testpath_full, "r", encoding="utf-8")
-                    lines_origin = f.readlines() # 1行毎にファイル終端まで全て読む(改行文字も含まれる)
-                    f.close()
-
-                    file.write('<tr>\n')
-                    file.write('<th colspan="6" width="500px" height="50%" align="left">\n')
-                    file.write('Lines ' + str(testline_start) + ' - ' + str(testine_end) + ' of ' + testpath + '\n')
-                    file.write('</th>\n')
-                    file.write('</tr>\n')
-                    file.write('<tr>\n')
-                    file.write('<td class="whitecolor" colspan="10" width="500px" height="50%">\n')
-                    file.write('<pre>\n')
-                    
-                    for x in range(testline_start,testine_end):
-                        file.write(lines_origin[x].replace('\n', '') + '\n')
-
-                    file.write('</pre>\n')
-                    file.write('</td>\n')
-                    file.write('</tr>\n')
-                file.write('</table>\n')
-                file.write('</div>\n')
-                file.write('<p></p>')
-
-                clone_num += 1
-
-    file.write('</body>\n')
-    file.write('</html>\n')
-
+    # print(sorted_item)
 except IndexError:
     print('Could not find similar code.')
     file = open('../TCS_result.html','w')
@@ -618,3 +711,137 @@ except IndexError:
     file.write('<center><h1>Sorry, Not Found Similality Code</h1></center>\n')
     file.write('</body>\n')
     file.write('</html>\n')
+
+    # print(sortItemDict)            
+
+                # dct = {
+                #     'apple': [1,20,'aaaa'],
+                #     'banana': [5,40],
+                #     'melon': [3,10,'dddd'],
+                #     'potato': [3,20],
+                #     'carrot': [5,80]
+                #     }
+
+                # dct_sorted = sorted(dct.items(), key=lambda x: (x[1][0], -x[1][1]))
+                # print(dct_sorted)
+
+    #             file.write('</pre>\n')
+    #             file.write('</td>\n')
+    #             file.write('</tr>\n')
+
+    #             items = db.mappingCollection_utility.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
+                
+    #             file.write('<tr>')
+    #             file.write('<td colspan="6"></td>')
+    #             file.write('</tr>')
+
+    #             file.write('<tr>')
+    #             file.write('<th colspan="6">Test Suite</th>')
+    #             file.write('</tr>')
+
+    #             file.write('<tr>\n')
+
+    #             testsmell_num = 0
+
+    #             if items[0]['Assertion Roulette'] == 'TRUE':
+    #                 file.write('<td bgcolor="#FF9966" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
+    #                 testsmell_num +=1
+    #             else:
+    #                 file.write('<td class="whitecolor" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
+
+    #             if items[0]['Conditional Test Logic'] == 'TRUE':
+    #                 file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
+    #                 testsmell_num +=1
+    #             else:
+    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
+                    
+    #             if items[0]['Default Test'] == 'TRUE':
+    #                 file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
+    #                 testsmell_num +=1
+    #             else:
+    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
+
+    #             if items[0]['Eager Test'] == 'TRUE':
+    #                 file.write('<td bgcolor="#FF9966" width="10%" height="5px" align="center">Eager Test</td>\n')
+    #                 testsmell_num +=1
+    #             else:
+    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Eager Test</td>\n')
+                
+    #             if items[0]['Exception Catchingowing'] == 'TRUE':
+    #                 file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
+    #                 testsmell_num +=1
+    #             else:
+    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
+
+    #             if items[0]['Mystery Guest'] == 'TRUE':
+    #                 file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
+    #                 testsmell_num +=1
+    #             else:
+    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
+
+    #             print('Assertion Roulette :'  + items[0]['Assertion Roulette'])
+    #             print('Conditional Test Logic : ' + items[0]['Conditional Test Logic'])
+    #             print('Default Test : ' + items[0]['Default Test'])
+    #             print('Eager Test : ' + items[0]['Eager Test'])
+    #             print('Exception Handling : ' + items[0]['Exception Catchingowing'])
+    #             print('Mystery Guest : ' + items[0]['Mystery Guest'])
+    #             print('Total Test Smells : ' + str(testsmell_num))
+
+    #             for item in items:
+    #                 testline_start = int(item['startline2'])
+    #                 testine_end = int(item['endline2'])
+    #                 testpath = item['testpath']
+    #                 # print(testpath)
+    #                 testpath_full = '/Users/ryosuke/Desktop/TCS/0123/' + testpath
+    #                 f = open(testpath_full, "r", encoding="utf-8")
+    #                 lines_origin = f.readlines() # 1行毎にファイル終端まで全て読む(改行文字も含まれる)
+    #                 f.close()
+
+    #                 file.write('<tr>\n')
+    #                 file.write('<th colspan="6" width="500px" height="50%" align="left">\n')
+    #                 file.write('Lines ' + str(testline_start) + ' - ' + str(testine_end) + ' of ' + testpath + '\n')
+    #                 file.write('</th>\n')
+    #                 file.write('</tr>\n')
+    #                 file.write('<tr>\n')
+    #                 file.write('<td class="whitecolor" colspan="10" width="500px" height="50%">\n')
+    #                 file.write('<pre>\n')
+                    
+    #                 for x in range(testline_start,testine_end):
+    #                     file.write(lines_origin[x].replace('\n', '') + '\n')
+
+    #                 file.write('</pre>\n')
+    #                 file.write('</td>\n')
+    #                 file.write('</tr>\n')
+    #             file.write('</table>\n')
+    #             file.write('</div>\n')
+    #             file.write('<p></p>')
+
+    #             clone_num += 1
+
+    # file.write('</body>\n')
+    # file.write('</html>\n')
+
+# except IndexError:
+#     print('Could not find similar code.')
+#     file = open('../TCS_result.html','w')
+    
+#     file.write('<html>\n')
+#     file.write('<head>\n')
+#     file.write('<title>Test Code Searcher Report</title>\n')
+#     file.write('<style>\n')
+#     file.write('body {\n')
+#     file.write('    background-color: #456;\n')
+#     file.write('}\n')
+  
+#     file.write('h1 {\n')
+#     file.write('    margin-top: 50px;\n')
+#     file.write('    color: white;\n')
+#     file.write('}\n')
+
+#     file.write('</style>\n')
+#     file.write('<head>\n')
+#     file.write('<body>\n')
+#     file.write('<center><h1>Sorry, Not Found Similality Code</h1></center>\n')
+#     file.write('</body>\n')
+#     file.write('</html>\n')
+
