@@ -292,10 +292,6 @@ try:
                     code1List.append(twoCodeArray[line1])
                     line1_num += 1
 
-                # print('code1')
-                # for code1 in code1List:
-                #     print(code1)
-
                 sortItemArray.append(code1)
 
                 print('Total line1 diff : ' + str(line1_diff))
@@ -395,10 +391,7 @@ try:
                 code1List_highlight = []
                 code2List_highlight = []
                 if code1_num == code2_num:
-                    for num in range(code1_num):
-                        # print(num)    
-                        # print(code1List[num])
-                        # print(code2List[num])        
+                    for num in range(code1_num):     
                         if code1_words_Array[num][0] == '!' and code2_words_Array[num][0] == '!':
                             if len(code1_words_Array[num]) >= len(code2_words_Array[num]):
                                 words_num = len(code2_words_Array[num])
@@ -425,13 +418,9 @@ try:
                                             # print(num)
                                             code1List_highlight[num] = '<mark class="darkred_line">' + code1List[num] + '</mark>'
                                             code2List_highlight[num] = '<mark class="darkgreen_line">' + code2List[num] + '</mark>'
-                                            print(code1List_highlight[num])
-                                            print(code2List_highlight[num])
                                             
                                         else:    
                                             print('Not equal : ' + str(num) + ' : "'+ code1_words_Array[num][word] + '" != "' + code2_words_Array[num][word] + '"')
-                                            # print(code1List[num])
-                                            # print(code2List[num])
                                             code1_highline = code1List[num].replace(code1_words_Array[num][word], '<mark class="darkred">' + code1_words_Array[num][word] + '</mark>')
                                             code2_highline = code2List[num].replace(code2_words_Array[num][word], '<mark class="darkgreen">' + code2_words_Array[num][word] + '</mark>')
                                             print(code1_highline)
@@ -440,8 +429,6 @@ try:
                                             code2List_highlight.append(code2_highline)              
                                         
                         else:
-                            # print(code1List[num])
-                            # print(code2List[num])
                             code1List_highlight.append(code1List[num])
                             code2List_highlight.append(code2List[num])
 
