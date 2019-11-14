@@ -493,10 +493,6 @@ try:
                 file.write('</td>\n')
                 file.write('</tr>\n')
 
-                # print('path : ' + pathToCodeInfoDict[key_path][1])
-                # print('start line : ' + str(pathToCodeInfoDict[key_path][2]))
-                # print('end line : ' + str(pathToCodeInfoDict[key_path][3]))
-
                 items = db.mappingCollection_utility.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
                 
                 file.write('<tr>')
