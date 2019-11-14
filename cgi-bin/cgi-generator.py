@@ -11,7 +11,6 @@ import difflib
 import time
 
 
-
 class rdict(dict):
     def __getitem__(self, key):
         try:
@@ -61,7 +60,7 @@ def writeHtml():
     file.write('}\n')
 
     file.write('mark.red {\n')
-    file.write('    background-color: rgb(254, 198, 198);\n')
+    file.write('    background-color: #FFC4C1;\n')
     file.write('    padding-left: 5px;\n')
     file.write('    padding-right: 5px;\n')
     file.write('}\n')
@@ -73,9 +72,35 @@ def writeHtml():
     file.write('}\n')
 
     file.write('mark.green {\n')
-    file.write('    background-color: rgba(190, 252, 190, 0.938);\n')
+    file.write('    background-color: #B5EFDB;\n')
     file.write('    padding-left: 5px;\n')
     file.write('    padding-right: 5px;\n')
+    file.write('}\n')
+
+    file.write('mark.grey {\n')
+    file.write('    background-color: #EAEEF0;\n')
+    file.write('    padding-left: 5px;\n')
+    file.write('    padding-right: 5px;\n')
+    file.write('}\n')
+
+    file.write('mark.darkred {\n')
+    file.write('    background-color: #FF8983;\n')
+    file.write('}\n')
+
+    file.write('mark.darkgreen_line {\n')
+    file.write('    background-color: #6BDFB8;\n')
+    file.write('    padding-left: 5px;\n')
+    file.write('    padding-right: 5px;\n')
+    file.write('}\n')
+
+    file.write('mark.darkred_line {\n')
+    file.write('    background-color: #FF8983;\n')
+    file.write('    padding-left: 5px;\n')
+    file.write('    padding-right: 5px;\n')
+    file.write('}\n')
+
+    file.write('mark.darkgreen {\n')
+    file.write('    background-color: #6BDFB8;\n')
     file.write('}\n')
 
     file.write('.whitecolor {\n')
@@ -243,7 +268,6 @@ try:
                     twoCodeArray.append(diff_line)
                 line_num += 1
             
-
             sortItemArray = []
             if len(initLineArray) != 0:
 
@@ -260,9 +284,6 @@ try:
                 # file.write('Lines ' + str(pathToCodeInfoDict[key_path][2]) + ' - ' + str(pathToCodeInfoDict[key_path][3]) + ' of ' + pathToCodeInfoDict[key_path][1] + '\n')
             
                 file.write('</tr>\n')
-                file.write('<tr>\n\n')
-                file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
-                file.write('<pre>\n')
 
                 code1List = []
                 line1_diff = 0
@@ -270,22 +291,10 @@ try:
                 for line1 in range(0,separator_num):
                     code1List.append(twoCodeArray[line1])
                     line1_num += 1
-                    line_mark1 = twoCodeArray[line1][:1]
-                    if line_mark1 == '!':
-                        file.write('<mark class="red">' + twoCodeArray[line1] + '</mark>' + '\n')
-                        line1_diff += 1
-                    elif line_mark1 == '+':
-                        file.write('<mark class="yellow">' + twoCodeArray[line1] + '</mark>' + '\n')
-                        line1_diff += 1
-                    elif line_mark1 == '-':
-                        file.write(twoCodeArray[line1] + '\n')
-                        line1_diff += 1
-                    else:
-                        file.write(twoCodeArray[line1] + '\n')
 
-                print('code1')
-                for code1 in code1List:
-                    print(code1)
+                # print('code1')
+                # for code1 in code1List:
+                #     print(code1)
 
                 sortItemArray.append(code1)
 
@@ -293,11 +302,6 @@ try:
                 print('Total line1 num  : ' + str(line1_num))
                 upi1 = line1_diff/line1_num
                 print('line1 UPI : ' + str(upi1))
-
-                file.write('</pre>\n')
-                file.write('</td>\n')
-                file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
-                file.write('<pre>\n')
                 
                 code2List = []
                 line2_diff = 0
@@ -305,23 +309,8 @@ try:
                 for line2 in range(separator_num+1,len(twoCodeArray)):
                     code2List.append(twoCodeArray[line2])
                     line2_num += 1
-                    line_mark2 = twoCodeArray[line2][:1]
-                    # print(line_mark)
-                    if line_mark2 == '!':
-                        file.write('<mark class="green">' + twoCodeArray[line2] + '</mark>' + '\n')
-                        line2_diff += 1
-                    elif line_mark2 == '+':
-                        file.write('<mark class="yellow">' + twoCodeArray[line2] + '</mark>' + '\n')
-                        line2_diff += 1
-                    elif line_mark2 == '-':
-                        file.write(twoCodeArray[line2] + '\n')
-                        line2_diff += 1
-                    else:
-                        file.write(twoCodeArray[line2] + '\n')
 
-                print('code2')
-                for code2 in code2List:
-                    print(code2)
+
 
                 sortItemArray.append(code2)
 
@@ -337,16 +326,192 @@ try:
                 print('UPI : ' + str(UPI))
 
                 sortItemArray.append(UPI)
+
+                if len(code1List) >= len(code2List):
+                    code_row = len(code1List)
+                else:
+                    code_row = len(code2List)
+
+                index = 0
+                code_row = len(code2List)
+                start = 0
+                while index <=100:
+                    index += 1
+                    for row_num in range(start+1,code_row):
+                        if code1List[row_num][:1] != code2List[row_num][:1]:
+                            start = row_num
+                            if code1List[row_num][:1] == '!' or code1List[row_num][:1] == '+' or code1List[row_num][:1] == '-':
+                                code2List.insert(row_num,'s')
+                                if len(code1List) <= len(code2List):
+                                    code_row = len(code1List)
+                                else:
+                                    code_row = len(code2List)
+                                
+                            elif code1List[row_num][:1] == ' ':
+                                code1List.insert(row_num,'s')
+                                if len(code1List) <= len(code2List):
+                                    code_row = len(code1List)
+                                else:
+                                    code_row = len(code2List)
+                        else:
+                            pass
+
+                print('code1List')
+                for code1 in code1List:
+                    print(code1)
+
+                print('code2List')
+                for code2 in code2List:
+                    print(code2)
+
+                file.write('<tr>\n\n')
+                file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
+                file.write('<pre>\n')                         
+
+                max_row1 = 0
+                for code_item in code1List:
+                    code_formal = code_item.replace('\t','   ')
+                    if max_row1 <=len(code_formal):
+                        max_row1 = len(code_formal)
+
+                print('code1_new_words')
+                code1_words_Array = []
+                code1_num = 0
+                for code1_new in code1List:
+                    code1_new_words = code1_new.split()
+                    print(code1_new_words)
+                    code1_words_Array.append(code1_new_words)
+                    code1_num += 1
+                    
+                print('code2_new_words')
+                code2_words_Array = []
+                code2_num = 0
+                for code2_new in code2List:
+                    code2_new_words = code2_new.split()
+                    print(code2_new_words)
+                    code2_words_Array.append(code2_new_words)
+                    code2_num += 1
+
+                code1List_highlight = []
+                code2List_highlight = []
+                if code1_num == code2_num:
+                    for num in range(code1_num):
+                        # print(num)    
+                        # print(code1List[num])
+                        # print(code2List[num])        
+                        if code1_words_Array[num][0] == '!' and code2_words_Array[num][0] == '!':
+                            if len(code1_words_Array[num]) >= len(code2_words_Array[num]):
+                                words_num = len(code2_words_Array[num])
+                            else:
+                                words_num = len(code1_words_Array[num])
+
+                            print(code1_words_Array[num])
+                            print(code2_words_Array[num])
+                            print('words num : ' + str(words_num))
+                            if words_num == 1:
+                                code1List_highlight.append(code1List[num])
+                                code2List_highlight.append(code2List[num])
+                            else:
+                                # print(num)
+                                not_equal = 0    
+                                for word in range(words_num):
+                                    if code1_words_Array[num][word] == code2_words_Array[num][word]:
+                                        print('Match! ' + str(not_equal))
+                                    
+                                    else:
+                                        not_equal += 1
+                                        print('Not Match! '+ str(not_equal))
+                                        if not_equal >= 2:
+                                            # print(num)
+                                            code1List_highlight[num] = '<mark class="darkred_line">' + code1List[num] + '</mark>'
+                                            code2List_highlight[num] = '<mark class="darkgreen_line">' + code2List[num] + '</mark>'
+                                            print(code1List_highlight[num])
+                                            print(code2List_highlight[num])
+                                            
+                                        else:    
+                                            print('Not equal : ' + str(num) + ' : "'+ code1_words_Array[num][word] + '" != "' + code2_words_Array[num][word] + '"')
+                                            # print(code1List[num])
+                                            # print(code2List[num])
+                                            code1_highline = code1List[num].replace(code1_words_Array[num][word], '<mark class="darkred">' + code1_words_Array[num][word] + '</mark>')
+                                            code2_highline = code2List[num].replace(code2_words_Array[num][word], '<mark class="darkgreen">' + code2_words_Array[num][word] + '</mark>')
+                                            print(code1_highline)
+                                            print(code2_highline)
+                                            code1List_highlight.append(code1_highline)
+                                            code2List_highlight.append(code2_highline)              
+                                        
+                        else:
+                            # print(code1List[num])
+                            # print(code2List[num])
+                            code1List_highlight.append(code1List[num])
+                            code2List_highlight.append(code2List[num])
+
+
+                print('code1List_highlight')
+                for code1_line in code1List_highlight:
+                    print(code1_line)
+                    code1_line = code1_line.replace('\t','   ')
+                    add_spc = max_row1 - len(code1_line)
+                    line_mark1 = code1_line[:1]
+                    if line_mark1 == '!':
+                        file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
+                        line1_diff += 1
+                    elif line_mark1 == '+':
+                        file.write('<mark class="yellow">' + code1_line + '</mark>' + '\n')
+                        line1_diff += 1
+                    elif line_mark1 == '-':
+                        file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
+                        line1_diff += 1
+                    elif line_mark1 == 's':
+                        for add_num in range(add_spc):
+                            code1_line = code1_line + '  '
+                        file.write('<mark class="grey">' + code1_line + '</mark>' + '\n')
+                        line1_diff += 1
+                    else:
+                        file.write(code1_line + '\n')   
+
+                file.write('</pre>\n')
+                file.write('</td>\n')
+                file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
+                file.write('<pre>\n')
+
+                max_row2 = 0
+                for code_item in code2List:
+                    if max_row2 <=len(code_item):
+                        max_row2 = len(code_item)
+
+                print('code2List_highlight')
+                for code2_line in code2List_highlight:
+                    print(code2_line)
+                    code2_line = code2_line.replace('\t','   ')
+                    add_spc = max_row2 - len(code2_line)
+                    line_mark2 = code2_line[:1]
+                    if line_mark2 == '!':
+                        file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
+                        line2_diff += 1
+                    elif line_mark2 == '+':
+                        file.write('<mark class="yellow">' + code2_line + '</mark>' + '\n')
+                        line2_diff += 1
+                    elif line_mark2 == '-':
+                        file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
+                        line2_diff += 1
+                    elif line_mark2 == 's':
+                        for add_num in range(add_spc):
+                            code2_line = code2_line + '  '
+                        file.write('<mark class="grey">' + code2_line + '</mark>' + '\n')
+                        line2_diff += 1
+                    else:
+                        file.write(code2_line + '\n')
+
                 file.write('</pre>\n')
                 file.write('</td>\n')
                 file.write('</tr>\n')
 
-                print('path : ' + pathToCodeInfoDict[key_path][1])
-                print('start line : ' + str(pathToCodeInfoDict[key_path][2]))
-                print('end line : ' + str(pathToCodeInfoDict[key_path][3]))
+                # print('path : ' + pathToCodeInfoDict[key_path][1])
+                # print('start line : ' + str(pathToCodeInfoDict[key_path][2]))
+                # print('end line : ' + str(pathToCodeInfoDict[key_path][3]))
 
                 items = db.mappingCollection_utility.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
-             
+                
                 file.write('<tr>')
                 file.write('<td colspan="6"></td>')
                 file.write('</tr>')
@@ -433,7 +598,7 @@ try:
                 file.write('<p></p>')
 
                 clone_num += 1
-    
+
     file.write('</body>\n')
     file.write('</html>\n')
 
