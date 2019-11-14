@@ -28,6 +28,7 @@ class rdict(dict):
 def writeHtml():
     file.write('<html>\n')
     file.write('<head>\n')
+    file.write('<link rel = "icon" href="image/tcs.ico">\n')
     file.write('<title>Test Code Searcher Report</title>\n')
     file.write('<style>\n')
     file.write('body {\n')
@@ -673,19 +674,6 @@ try:
 
     file = open('../TCS_result.html','w')
     generateHTML(sortedItemArray,codefrag_num)
-    # dct = {
-    #         'apple': [1,20,'aaaa'],
-    #         'banana': [5,40],
-    #         'melon': [3,10,'dddd'],
-    #         'potato': [3,20],
-    #         'carrot': [5,80]
-    #     }
-
-    # dct_sorted = sorted(dct.items(), key=lambda x: (x[1][0], -x[1][1]))
-    # print(dct_sorted)
-    # for i in dct_sorted:
-    #     print(i[1])
-
 
 
     # print(sorted_item)
@@ -712,137 +700,4 @@ except IndexError:
     file.write('<center><h1>Sorry, Not Found Similality Code</h1></center>\n')
     file.write('</body>\n')
     file.write('</html>\n')
-
-    # print(sortItemDict)            
-
-                # dct = {
-                #     'apple': [1,20,'aaaa'],
-                #     'banana': [5,40],
-                #     'melon': [3,10,'dddd'],
-                #     'potato': [3,20],
-                #     'carrot': [5,80]
-                #     }
-
-                # dct_sorted = sorted(dct.items(), key=lambda x: (x[1][0], -x[1][1]))
-                # print(dct_sorted)
-
-    #             file.write('</pre>\n')
-    #             file.write('</td>\n')
-    #             file.write('</tr>\n')
-
-    #             items = db.mappingCollection_utility.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
-                
-    #             file.write('<tr>')
-    #             file.write('<td colspan="6"></td>')
-    #             file.write('</tr>')
-
-    #             file.write('<tr>')
-    #             file.write('<th colspan="6">Test Suite</th>')
-    #             file.write('</tr>')
-
-    #             file.write('<tr>\n')
-
-    #             testsmell_num = 0
-
-    #             if items[0]['Assertion Roulette'] == 'TRUE':
-    #                 file.write('<td bgcolor="#FF9966" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
-    #                 testsmell_num +=1
-    #             else:
-    #                 file.write('<td class="whitecolor" width="10%" height="5spx" align="center">Assertion Roulette</td>\n')
-
-    #             if items[0]['Conditional Test Logic'] == 'TRUE':
-    #                 file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
-    #                 testsmell_num +=1
-    #             else:
-    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Conditional Test Logic</td>\n')
-                    
-    #             if items[0]['Default Test'] == 'TRUE':
-    #                 file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
-    #                 testsmell_num +=1
-    #             else:
-    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Default Test</td>\n')
-
-    #             if items[0]['Eager Test'] == 'TRUE':
-    #                 file.write('<td bgcolor="#FF9966" width="10%" height="5px" align="center">Eager Test</td>\n')
-    #                 testsmell_num +=1
-    #             else:
-    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Eager Test</td>\n')
-                
-    #             if items[0]['Exception Catchingowing'] == 'TRUE':
-    #                 file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
-    #                 testsmell_num +=1
-    #             else:
-    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Exception Handling</td>\n')
-
-    #             if items[0]['Mystery Guest'] == 'TRUE':
-    #                 file.write('<td bgcolor="#FF9966" class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
-    #                 testsmell_num +=1
-    #             else:
-    #                 file.write('<td class="whitecolor" width="10%" height="5px" align="center">Mystery Guest</td>\n')
-
-    #             print('Assertion Roulette :'  + items[0]['Assertion Roulette'])
-    #             print('Conditional Test Logic : ' + items[0]['Conditional Test Logic'])
-    #             print('Default Test : ' + items[0]['Default Test'])
-    #             print('Eager Test : ' + items[0]['Eager Test'])
-    #             print('Exception Handling : ' + items[0]['Exception Catchingowing'])
-    #             print('Mystery Guest : ' + items[0]['Mystery Guest'])
-    #             print('Total Test Smells : ' + str(testsmell_num))
-
-    #             for item in items:
-    #                 testline_start = int(item['startline2'])
-    #                 testine_end = int(item['endline2'])
-    #                 testpath = item['testpath']
-    #                 # print(testpath)
-    #                 testpath_full = '/Users/ryosuke/Desktop/TCS/0123/' + testpath
-    #                 f = open(testpath_full, "r", encoding="utf-8")
-    #                 lines_origin = f.readlines() # 1行毎にファイル終端まで全て読む(改行文字も含まれる)
-    #                 f.close()
-
-    #                 file.write('<tr>\n')
-    #                 file.write('<th colspan="6" width="500px" height="50%" align="left">\n')
-    #                 file.write('Lines ' + str(testline_start) + ' - ' + str(testine_end) + ' of ' + testpath + '\n')
-    #                 file.write('</th>\n')
-    #                 file.write('</tr>\n')
-    #                 file.write('<tr>\n')
-    #                 file.write('<td class="whitecolor" colspan="10" width="500px" height="50%">\n')
-    #                 file.write('<pre>\n')
-                    
-    #                 for x in range(testline_start,testine_end):
-    #                     file.write(lines_origin[x].replace('\n', '') + '\n')
-
-    #                 file.write('</pre>\n')
-    #                 file.write('</td>\n')
-    #                 file.write('</tr>\n')
-    #             file.write('</table>\n')
-    #             file.write('</div>\n')
-    #             file.write('<p></p>')
-
-    #             clone_num += 1
-
-    # file.write('</body>\n')
-    # file.write('</html>\n')
-
-# except IndexError:
-#     print('Could not find similar code.')
-#     file = open('../TCS_result.html','w')
-    
-#     file.write('<html>\n')
-#     file.write('<head>\n')
-#     file.write('<title>Test Code Searcher Report</title>\n')
-#     file.write('<style>\n')
-#     file.write('body {\n')
-#     file.write('    background-color: #456;\n')
-#     file.write('}\n')
-  
-#     file.write('h1 {\n')
-#     file.write('    margin-top: 50px;\n')
-#     file.write('    color: white;\n')
-#     file.write('}\n')
-
-#     file.write('</style>\n')
-#     file.write('<head>\n')
-#     file.write('<body>\n')
-#     file.write('<center><h1>Sorry, Not Found Similality Code</h1></center>\n')
-#     file.write('</body>\n')
-#     file.write('</html>\n')
 
