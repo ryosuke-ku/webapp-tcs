@@ -390,6 +390,7 @@ try:
                 upi1 = calcUPI(line1_diff,line1_num)
                 print('line1 UPI : ' + str(upi1))
                 
+                
                 code2List = []
                 line2_diff = 0
                 line2_num = 0 
