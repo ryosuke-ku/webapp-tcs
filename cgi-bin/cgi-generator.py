@@ -89,14 +89,12 @@ def writeHtml():
 
     file.write('mark.darkgreen_line {\n')
     file.write('    background-color: #6BDFB8;\n')
-    file.write('    padding-left: 5px;\n')
-    file.write('    padding-right: 5px;\n')
+    # file.write('    padding-left: 5px;\n')
+    # file.write('    padding-right: 5px;\n')
     file.write('}\n')
 
     file.write('mark.darkred_line {\n')
     file.write('    background-color: #FF8983;\n')
-    file.write('    padding-left: 5px;\n')
-    file.write('    padding-right: 5px;\n')
     file.write('}\n')
 
     file.write('mark.darkgreen {\n')
@@ -124,6 +122,7 @@ def writeHtml():
     file.write('table, td, th {\n')
     file.write('border: 2px #cccccc solid;\n')
     file.write('}\n')
+
     file.write('table {\n')
     file.write('  border: 1px solid #aaa;\n')
     file.write('  border-collapse: separate;\n')
@@ -131,18 +130,22 @@ def writeHtml():
     file.write('  border-radius: 20px;\n')
     file.write('  overflow: hidden;\n')
     file.write('}\n')
+
     file.write('table thead th,\n')
     file.write('table th,\n')
     file.write('table td {\n')
     file.write('  padding: .6em 3em;\n')
     file.write('  border-bottom: 1px solid #aaa;\n')
     file.write('}\n')
+
     file.write('table thead th {\n')
     file.write('  background-color: #ddd;\n')
     file.write('}\n')
+
     file.write('table th {\n')
     file.write('  background-color: #eee;\n')
     file.write('}\n')
+
     file.write('table thead th + th,\n')
     file.write('table td {\n')
     file.write('  border-left: 1px solid #aaa;\n')
@@ -152,6 +155,30 @@ def writeHtml():
     file.write('table tr:last-child td {\n')
     file.write('  border-bottom: none;\n')
     file.write('}\n')
+
+    file.write('td.leftcode {\n')
+    file.write('   border-top: 0px;\n')
+    file.write('   border-bottom: none;\n')
+    file.write('   padding: 0px;\n')
+    file.write('   padding-left: 5%;\n')
+    file.write('   height: 5px;\n')
+    file.write('}\n')
+
+    file.write('td.rightcode {\n')
+    file.write('   border-top: 0px;\n')
+    file.write('   border-bottom: 0px;\n')
+    file.write('   padding: 0px;\n')
+    file.write('   padding-left: 5%;\n')
+    file.write('   height: 5px;\n')
+    file.write('}\n')
+
+    file.write('pre {\n')
+    file.write('   overflow: auto;\n')
+    file.write('   white-space: pre-wrap;\n')
+    file.write('   word-wrap: break-word;\n')
+    file.write('   margin: 0%;\n')
+    file.write('}\n')
+
 
     file.write('</style>\n')
     file.write('<head>\n')
@@ -163,7 +190,7 @@ def countDiff_line(array):
     line_diff = 0 
     for code_line in array:
         print(code_line)
-        if code_line[:1] == '!' or code_line[:1] == '-' or code_line[:1] == '+':
+        if code_line[:1] == '-' or code_line[:1] == '+' or code_line[:1] == '!': #or code_line[:1] == '!'
             line_diff += 1
     
     return line_diff
@@ -177,6 +204,8 @@ def generateHTML(sortedItemArray,clone_num):
     writeHtml()
     for num in range(clone_num):
         similarity = round((1 - sortedItemArray[num][0])*100,1)
+        if similarity == 100.0:
+            similarity = 100
         file.write('<div id="table-flame">\n')
         file.write('<h2 align="center">Clone Pairs ' + str(num + 1) + ' : ' + str(similarity) + '%' + '</h2>\n')
         file.write('<table border="1" width=50% height="50" align="center">\n')
@@ -184,24 +213,32 @@ def generateHTML(sortedItemArray,clone_num):
         file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
         file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')            
         file.write('</tr>\n')
-        file.write('<tr>\n')
-        file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
-        file.write('<pre>\n')
+
+        for twofragline_num in range(len(sortedItemArray[num][11])):
+            file.write('<tr>\n')
+            file.write(sortedItemArray[num][11][twofragline_num] + '\n')
+            file.write(sortedItemArray[num][12][twofragline_num] + '\n')
+            file.write('</tr>\n')
+
+
+        # file.write('<tr>\n')
+        # file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
+        # file.write('<pre>\n')
        
-        for frag1_line in sortedItemArray[num][11]:
-            file.write(frag1_line + '\n')
+        # for frag1_line in sortedItemArray[num][11]:
+        #     file.write(frag1_line + '\n')
         
-        file.write('</pre>\n')
-        file.write('</td>\n')
-        file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
-        file.write('<pre>\n')        
+        # file.write('</pre>\n')
+        # file.write('</td>\n')
+        # file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
+        # file.write('<pre>\n')        
         
-        for frag2_line in sortedItemArray[num][12]:
-            file.write(frag2_line + '\n')
+        # for frag2_line in sortedItemArray[num][12]:
+        #     file.write(frag2_line + '\n')
         
-        file.write('</pre>\n')
-        file.write('</td>\n')
-        file.write('</tr>\n')
+        # file.write('</pre>\n')
+        # file.write('</td>\n')
+        # file.write('</tr>\n')
         file.write('<tr>')
         file.write('<td colspan="6"></td>')
         file.write('</tr>')
@@ -369,14 +406,6 @@ try:
                 print('twoCodeArray : ' + str(len(twoCodeArray)))
                 print('initLineArray : ' + str(len(initLineArray)))
 
-                # file.write('<div id="table-flame">\n')
-                # file.write('<h2 align="center">Clone Pairs ' + str(clone_num) +'</h2>\n')
-                # file.write('<table border="1" width=50% height="50" align="center">\n')
-                # file.write('<tr>\n')
-                # file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Input Code</th>\n')
-                # file.write('<th class="title" colspan="3" width="500px" height="50%" align="center">Similarity Code</th>\n')            
-                # file.write('</tr>\n')
-
                 code1List = [] 
                 line1_num = 0
                 for line1 in range(0,separator_num):
@@ -522,8 +551,6 @@ try:
                             code1List_highlight.append(code1List[num])
                             code2List_highlight.append(code2List[num])
 
-                
-
                 items = db.mappingCollection_utility.find({'path':pathToCodeInfoDict[key_path][1],'startline1':int(pathToCodeInfoDict[key_path][2]),'endline1':int(pathToCodeInfoDict[key_path][3])})
                 smell_count = 0
             
@@ -586,30 +613,25 @@ try:
                     line_mark1 = code1_line[:1]
                     if line_mark1 == '!':
                         # file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
-                        code1List_output.append('<mark class="red">' + code1_line + '</mark>')
+                        code1List_output.append('<td class="leftcode" bgcolor="#FFC4C1" colspan="3"><pre>' + code1_line + '</pre></td>')
                         line1_diff += 1
                     elif line_mark1 == '+':
                         # file.write('<mark class="yellow">' + code1_line + '</mark>' + '\n')
-                        code1List_output.append('<mark class="yellow">' + code1_line + '</mark>')
+                        code1List_output.append('<td class="leftcode" bgcolor="#feea7b" colspan="3"><pre>' + code1_line + '</pre></td>')
                         line1_diff += 1
                     elif line_mark1 == '-':
                         # file.write('<mark class="red">' + code1_line + '</mark>' + '\n')
-                        code1List_output.append('<mark class="red">' + code1_line + '</mark>')
+                        code1List_output.append('<td class="leftcode" bgcolor="#FFC4C1" colspan="3"><pre>' + code1_line + '</pre></td>')
                         line1_diff += 1
                     elif line_mark1 == '*':
-                        for add_num in range(add_spc):
-                            code1_line = code1_line + '  '
+                        # for add_num in range(add_spc):
+                        #     code1_line = code1_line + '  '
                         # file.write('<mark class="grey">' + code1_line + '</mark>' + '\n')
-                        code1List_output.append('<mark class="grey">' + code1_line + '</mark>')
+                        code1List_output.append('<td class="leftcode" bgcolor="#EAEEF0" colspan="3"><pre>' + code1_line + '</pre></td>')
                         line1_diff += 1
                     else:
                         # file.write(code1_line + '\n')
-                        code1List_output.append(code1_line)   
-
-                # file.write('</pre>\n')
-                # file.write('</td>\n')
-                # file.write('<td class="whitecolor" colspan="3" width="500px" height="50%">\n')
-                # file.write('<pre>\n')
+                        code1List_output.append('<td class="leftcode" bgcolor="#fbfbfb" colspan="3"><pre>' + code1_line + '</pre></td>')   
 
                 code2List_output = []
                 max_row2 = 0
@@ -625,25 +647,25 @@ try:
                     line_mark2 = code2_line[:1]
                     if line_mark2 == '!':
                         # file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
-                        code2List_output.append('<mark class="green">' + code2_line + '</mark>')
+                        code2List_output.append('<td class="rightcode" bgcolor="#B5EFDB" colspan="3"><pre>' + code2_line + '</pre></td>')
                         line2_diff += 1
                     elif line_mark2 == '+':
                         # file.write('<mark class="yellow">' + code2_line + '</mark>' + '\n')
-                        code2List_output.append('<mark class="yellow">' + code2_line + '</mark>')
+                        code2List_output.append('<td class="rightcode" bgcolor="#feea7b" colspan="3"><pre>' + code2_line + '</pre></td>')
                         line2_diff += 1
                     elif line_mark2 == '-':
                         # file.write('<mark class="green">' + code2_line + '</mark>' + '\n')
-                        code2List_output.append('<mark class="green">' + code2_line + '</mark>')
+                        code2List_output.append('<td class="rightcode" bgcolor="#B5EFDB" colspan="3"><pre>' + code2_line + '</pre></td>')
                         line2_diff += 1
                     elif line_mark2 == '*':
-                        for add_num in range(add_spc):
-                            code2_line = code2_line + '  '
+                        # for add_num in range(add_spc):
+                            # code2_line = code2_line + '  '
                         # file.write('<mark class="grey">' + code2_line + '</mark>' + '\n')
-                        code2List_output.append('<mark class="grey">' + code2_line + '</mark>')
+                        code2List_output.append('<td class="rightcode" bgcolor="#EAEEF0" colspan="3"><pre>' + code2_line + '</pre></td>')
                         line2_diff += 1
                     else:
                         # file.write(code2_line + '\n')
-                        code2List_output.append(code2_line)
+                        code2List_output.append('<td class="rightcode" bgcolor="#fbfbfb" colspan="3"><pre>' + code2_line + '</pre></td>')
 
                 print('code1List_output')
                 for code1_output_line in code1List_output:
