@@ -674,8 +674,6 @@ try:
     file = open('../TCS_result.html','w')
     generateHTML(sortedItemArray,codefrag_num)
 
-
-    # print(sorted_item)
 except IndexError:
     print('Could not find similar code.')
     file = open('../TCS_result.html','w')
